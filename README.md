@@ -87,7 +87,7 @@ Unverified claims render with a **Pending approval** badge (`<Pending>` in `src/
 
 ## Deploying (Vercel)
 
-1. Import the repo into SEED U's Vercel account (framework preset: Next.js, no build settings needed).
+1. Import the repo into SEED U's Vercel account. `vercel.json` pins the framework to Next.js, so the preset is correct even if the project was created before the code existed.
 2. Add environment variables from `.env.example` (Production and Preview).
 3. Deploy. Check the preview, then add `seedu.io` / `www.seedu.io` under Domains.
 4. Submit `https://www.seedu.io/sitemap.xml` in Google Search Console.
