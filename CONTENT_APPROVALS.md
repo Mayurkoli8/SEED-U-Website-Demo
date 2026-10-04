@@ -35,4 +35,5 @@ Re-add any of them only with an approved source.
 - **Agricultural guidance** in the demo answers: agronomist / KVK review. The answers are written as "what to check" prompts, not diagnoses.
 - **Privacy policy and Terms**: legal review (including India's DPDP Act, 2023). Both pages show a draft banner.
 - **Blog posts** in `src/content/posts.ts` are `draft: true` (labelled, `noindex`, excluded from the sitemap). Set `draft: false` when approved.
+- **Corn-growing Lottie** (`design/lottie/corn-growing.source.json`): its metadata only says it was exported with the LottieFiles After Effects plugin. Confirm where it came from and that its licence allows commercial use.
 - **Team roles** on /about are copied from seedu.io. Confirm they are current.

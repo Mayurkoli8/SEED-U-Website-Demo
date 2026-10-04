@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lottie": "node scripts/build-lottie.mjs"
   },
   "dependencies": {
     "framer-motion": "^14.0.0",
     "gsap": "^3.15.0",
+    "lottie-web": "5.13.0",
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8"

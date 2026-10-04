@@ -27,6 +27,8 @@ const devanagari = Noto_Sans_Devanagari({
   subsets: ["devanagari"],
   weight: ["400", "500", "600"],
   display: "swap",
+  // Fetched on demand via unicode-range, only on pages that render Marathi.
+  preload: false,
 });
 
 export const metadata: Metadata = {

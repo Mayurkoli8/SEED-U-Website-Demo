@@ -40,12 +40,23 @@ export function ButtonLink({ href, children, variant = "primary", className }: B
   );
 }
 
-export function Eyebrow({ index, children, tone = "dark" }: { index?: string; children: React.ReactNode; tone?: "dark" | "light" }) {
+export function Eyebrow({
+  index,
+  children,
+  tone = "dark",
+  className,
+}: {
+  index?: string;
+  children: React.ReactNode;
+  tone?: "dark" | "light";
+  className?: string;
+}) {
   return (
     <p
       className={cx(
         "mb-5 flex items-center gap-3 text-sm font-semibold tracking-[0.14em] uppercase",
         tone === "dark" ? "text-leaf" : "text-sage",
+        className,
       )}
     >
       {index && <span className="font-display text-base tracking-normal tabular-nums opacity-70">{index}</span>}

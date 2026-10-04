@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { Container, SectionIntro, cx } from "@/components/ui/primitives";
+import { Lottie } from "@/components/ui/Lottie";
 
 const STEPS = [
   {
@@ -23,68 +23,27 @@ const STEPS = [
   },
 ];
 
-const ease = [0.22, 1, 0.36, 1] as const;
+// Frames in public/lottie/corn-growing.json (see scripts/build-lottie.mjs).
+const STAGE_FRAMES = [16, 29, 42, 68];
+const STAGE_LABELS = ["Uncertainty", "Knowledge", "Action", "Growth"];
+const FIELD = ["#ddd2a6", "#cfd3a0", "#bcd197", "#a6c98b"];
 
-/** Uncertainty → knowledge → action → growth. The plant grows one stage per step. */
-function GrowingPlant({ stage }: { stage: number }) {
-  const field = ["#d8cc9c", "#c9cf98", "#b4cc8e", "#9dc282"][stage];
+/** Uncertainty → knowledge → action → growth. The corn grows one stage per step. */
+function GrowingPlant({ stage, autoplay = false }: { stage: number; autoplay?: boolean }) {
   return (
-    <svg viewBox="0 0 400 440" className="w-full" aria-hidden>
-      <rect width="400" height="440" rx="36" fill="#eef2e8" />
-      <motion.path d="M0 300 Q 200 280 400 300 V 440 H0Z" initial={false} animate={{ fill: field }} transition={{ duration: 1, ease }} />
-      {[-3, -2, -1, 0, 1, 2, 3].map((i) => (
-        <motion.line
-          key={i}
-          x1={200 + i * 14}
-          y1={298}
-          x2={200 + i * 80}
-          y2={440}
-          strokeWidth="6"
-          strokeLinecap="round"
-          initial={false}
-          animate={{ stroke: stage >= 2 ? "#6fa65a" : "#bfb27a" }}
-          transition={{ duration: 1, delay: Math.abs(i) * 0.05, ease }}
-        />
-      ))}
-      <ellipse cx="200" cy="330" rx="56" ry="13" fill="#8a6a4a" opacity="0.6" />
-      <motion.path
-        d="M200 330 C 200 290, 206 240, 198 200 C 192 170, 204 130, 200 96"
-        fill="none"
-        stroke="#3f7d33"
-        strokeWidth="6"
-        strokeLinecap="round"
-        initial={false}
-        animate={{ pathLength: [0.18, 0.45, 0.72, 1][stage] }}
-        transition={{ duration: 1.1, ease }}
+    <div className="relative aspect-[10/11] overflow-hidden rounded-[2.25rem] bg-mist ring-1 ring-forest/10">
+      <div aria-hidden className="absolute -inset-x-[15%] -bottom-[8%] h-[18%] rounded-[50%] transition-colors duration-1000" style={{ backgroundColor: FIELD[stage] }} />
+      <Lottie
+        src="/lottie/corn-growing.json"
+        frame={autoplay ? undefined : STAGE_FRAMES[stage]}
+        segment={autoplay ? [0, STAGE_FRAMES[3]] : undefined}
+        className="absolute inset-x-[4%] top-[10%] bottom-[2%]"
       />
-      {[
-        { d: "M201 300 C 186 278, 160 274, 146 284 C 160 304, 186 308, 201 300Z", ox: 1, oy: 0.8, at: 0 },
-        { d: "M201 288 C 214 264, 240 258, 256 266 C 242 290, 216 296, 201 288Z", ox: 0, oy: 0.85, at: 0 },
-        { d: "M200 236 C 180 210, 148 206, 130 220 C 148 244, 180 248, 200 236Z", ox: 1, oy: 0.75, at: 1 },
-        { d: "M200 222 C 218 194, 252 188, 272 200 C 254 228, 222 234, 200 222Z", ox: 0, oy: 0.8, at: 1 },
-        { d: "M199 168 C 182 146, 154 142, 140 154 C 156 176, 182 180, 199 168Z", ox: 1, oy: 0.75, at: 2 },
-        { d: "M200 156 C 214 132, 242 126, 258 136 C 244 160, 218 166, 200 156Z", ox: 0, oy: 0.8, at: 2 },
-      ].map((leaf, i) => (
-        <motion.path
-          key={i}
-          d={leaf.d}
-          fill={i % 2 ? "#4b8a3b" : "#74a95c"}
-          initial={false}
-          animate={{ scale: stage >= leaf.at ? 1 : 0, opacity: stage >= leaf.at ? 1 : 0 }}
-          style={{ originX: leaf.ox, originY: leaf.oy }}
-          transition={{ duration: 0.8, delay: 0.4, ease }}
-        />
-      ))}
-      <motion.g initial={false} animate={{ scale: stage >= 3 ? 1 : 0, opacity: stage >= 3 ? 1 : 0 }} style={{ originX: 0.5, originY: 0.5 }} transition={{ duration: 0.9, delay: 0.6, ease }}>
-        {[0, 72, 144, 216, 288].map((r) => (
-          <ellipse key={r} cx="200" cy="80" rx="9" ry="18" fill="#d6a03f" transform={`rotate(${r} 200 96) translate(0 -2)`} />
-        ))}
-        <circle cx="200" cy="96" r="9" fill="#8a6a4a" />
-      </motion.g>
-      <text x="24" y="44" fill="#55665a" fontSize="15" fontWeight="600" letterSpacing="1.5">
-        {["UNCERTAINTY", "KNOWLEDGE", "ACTION", "GROWTH"][stage]}
-      </text>
-    </svg>
+      <p className="absolute top-6 left-7 text-sm font-semibold tracking-[0.14em] text-muted uppercase">
+        <span className="sr-only">Stage: </span>
+        {STAGE_LABELS[stage]}
+      </p>
+    </div>
   );
 }
 
@@ -112,9 +71,13 @@ export function ActionSection({ index = "07" }: { index?: string }) {
           <p>Guidance becomes a short sequence the farmer can follow. Illustrative example, continuing the yellow-leaf question.</p>
         </SectionIntro>
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="mx-auto mt-12 max-w-sm lg:hidden">
+          <GrowingPlant stage={3} autoplay />
+        </div>
+
+        <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-2 lg:gap-16">
           <div className="hidden lg:block">
-            <div className="sticky top-28 overflow-hidden rounded-[2.25rem]">
+            <div className="sticky top-28">
               <GrowingPlant stage={stage} />
             </div>
           </div>
