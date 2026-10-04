@@ -1,0 +1,86 @@
+# SEED U website
+
+The SEED U marketing site: *Ask. Understand. Grow.* A farmer asks a question in their own language, gets AI-supported guidance, and uses it to make better decisions on the farm.
+
+Built from scratch from `SEED_U_Claude_Website_Build_Brief.docx` (in this repo).
+
+## Quick start
+
+```bash
+npm install
+cp .env.example .env.local   # optional; every variable has a safe default
+npm run dev                  # http://localhost:3000
+npm run build && npm start   # production build
+npm run lint
+```
+
+Requires Node.js 20.9+.
+
+## Stack
+
+| Dependency | Why |
+| --- | --- |
+| [Next.js 16](https://nextjs.org) (App Router, TypeScript) | Static pre-rendering, metadata API, sitemap/robots, OG images |
+| [Tailwind CSS 4](https://tailwindcss.com) | Styling. Design tokens live in `src/app/globals.css` (`@theme`) |
+| [GSAP 3](https://gsap.com) + ScrollTrigger | Scroll-scrubbed choreography (problem, roots, farm parallax, vision zoom) |
+| [Framer Motion](https://motion.dev) | Component transitions (hero loop, Ask demo, growing plant, reveals) |
+| `next/font` (Google Fonts: Fraunces, Manrope, Noto Sans Devanagari) | Self-hosted at build time, no runtime font requests |
+
+There is no CMS, database or backend, and no third-party service is called at runtime unless you set the optional analytics or Ask-endpoint variables.
+
+## Project structure
+
+```
+src/
+  app/                    Routes (one folder per page) + sitemap.ts, robots.ts, opengraph-image.tsx, icon.svg
+  components/
+    home/                 The 11-chapter home-page scroll story (Hero … CtaSection) + GrowthRail
+    layout/               Header, footer, motion + analytics providers
+    ui/                   Primitives (Button, SectionIntro, Pending badge), PageHero, Reveal, JsonLd
+  content/posts.ts        Blog posts as typed data
+  lib/
+    site.ts               Site config + navigation
+    seo.ts                Per-page metadata helper, Organization/WebSite JSON-LD
+    ask/                  "Ask SEED U" demo: types, sample answers, provider switch
+    content.ts            Claim-sensitive shared copy (built items, partner types, horizons)
+    languages.ts          Language list (Marathi = current focus; others = roadmap)
+    gsap.ts               useScrollScene hook (reduced-motion aware)
+    analytics.ts          track() hook (no-op until GA4 is configured)
+```
+
+## Pages
+
+`/` · `/platform` · `/marathi-agriculture-ai` · `/what-we-have-built` · `/partners` · `/blog` · `/blog/[slug]` · `/about` · `/contact` · `/privacy-policy` · `/terms`
+
+## The Ask SEED U demo
+
+`src/lib/ask` returns **local sample answers**. The UI labels it as a demo everywhere it appears. To connect a real endpoint, set `NEXT_PUBLIC_SEEDU_ASK_ENDPOINT`. It must accept `POST { question, language }` and return the `AskAnswer` shape in `src/lib/ask/types.ts`. No UI change is needed. Language detection is currently Marathi (Devanagari) vs English. Add languages in `AskLanguage` and `samples.ts`.
+
+## Content discipline
+
+Unverified claims render with a **Pending approval** badge (`<Pending>` in `src/components/ui/primitives.tsx`). The full list, plus what was deliberately left out, is in [`CONTENT_APPROVALS.md`](CONTENT_APPROVALS.md). Turn the badges off with `NEXT_PUBLIC_SHOW_APPROVAL_MARKERS=false` once everything is approved.
+
+## SEO
+
+- One `h1` per page, unique title/description/canonical/Open Graph/X tags via `pageMetadata()` in `src/lib/seo.ts`.
+- Organization + WebSite JSON-LD (root layout), BreadcrumbList (inner pages), BlogPosting (posts).
+- `sitemap.xml` and `robots.txt` are generated. Preview deployments (`VERCEL_ENV !== production`) are disallowed in robots.
+- Generated Open Graph image at `/opengraph-image`.
+- Search Console: set `NEXT_PUBLIC_GSC_VERIFICATION`.
+- Legacy-path redirects in `next.config.ts`. The old site is a single page with `#anchors`. Add any other indexed old URLs there before switching the domain.
+
+## Motion and accessibility
+
+- Every animation explains the story. All of them respect `prefers-reduced-motion`: GSAP scenes run only under `(prefers-reduced-motion: no-preference)`, Framer Motion uses `MotionConfig reducedMotion="user"`, and the hero shows its final state.
+- The hero loop has a Pause control and stops when off-screen.
+- All story text is real HTML. SVG illustrations are `aria-hidden`.
+- Animations use transforms/opacity. There are no raster images and no 3D, so the site stays light on slow connections.
+
+## Deploying (Vercel)
+
+1. Import the repo into SEED U's Vercel account (framework preset: Next.js, no build settings needed).
+2. Add environment variables from `.env.example` (Production and Preview).
+3. Deploy. Check the preview, then add `seedu.io` / `www.seedu.io` under Domains.
+4. Submit `https://www.seedu.io/sitemap.xml` in Google Search Console.
+
+Keep secrets out of the repo: `.env*` is git-ignored except `.env.example`.
