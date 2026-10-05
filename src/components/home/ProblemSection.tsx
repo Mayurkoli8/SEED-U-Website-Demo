@@ -6,7 +6,7 @@ import { MOTION_OK, gsap, useScrollScene } from "@/lib/gsap";
 
 type Fragment = { text: string; kind: "knowledge" | "language" | "access"; lang?: "mr" };
 
-const FRAGMENTS: Fragment[] = [
+export const FRAGMENTS: Fragment[] = [
   { text: "Research papers", kind: "knowledge" },
   { text: "Advisory bulletins", kind: "knowledge" },
   { text: "Scheme notices", kind: "knowledge" },
@@ -21,7 +21,7 @@ const FRAGMENTS: Fragment[] = [
   { text: "Too technical", kind: "access" },
 ];
 
-const KIND_STYLE = {
+export const KIND_STYLE = {
   knowledge: "bg-sage-soft text-forest ring-leaf/25",
   language: "bg-[#f3e7cb] text-soil ring-turmeric/30",
   access: "bg-paper text-muted ring-forest/15",

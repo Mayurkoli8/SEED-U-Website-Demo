@@ -5,7 +5,7 @@ import { useReducedMotion } from "framer-motion";
 import { Container, Pending, SectionIntro, cx } from "@/components/ui/primitives";
 import { MOTION_OK, gsap, useScrollScene } from "@/lib/gsap";
 
-const STEPS = [
+export const STEPS = [
   {
     key: "data",
     title: "Verified knowledge",

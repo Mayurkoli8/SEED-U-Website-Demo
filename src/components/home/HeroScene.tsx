@@ -12,7 +12,7 @@ import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useTra
 type Stage = 0 | 1 | 2 | 3 | 4 | 5;
 const DURATIONS: Record<Stage, number> = { 0: 900, 1: 1500, 2: 2600, 3: 2300, 4: 1300, 5: 6500 };
 
-const COPY = {
+export const COPY = {
   mr: {
     tag: "मराठी",
     question: "माझ्या पिकाची पाने पिवळी पडत आहेत. काय तपासावे?",

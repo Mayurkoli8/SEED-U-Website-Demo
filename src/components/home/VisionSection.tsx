@@ -16,11 +16,11 @@ function rng(seed: number) {
   };
 }
 const rand = rng(7);
-const POINTS = [{ x: 300, y: 200 }, ...Array.from({ length: 70 }, () => ({ x: 20 + rand() * 560, y: 20 + rand() * 360 }))].map((p) => ({
+export const POINTS = [{ x: 300, y: 200 }, ...Array.from({ length: 70 }, () => ({ x: 20 + rand() * 560, y: 20 + rand() * 360 }))].map((p) => ({
   x: Math.round(p.x),
   y: Math.round(p.y),
 }));
-const EDGES: [number, number][] = [];
+export const EDGES: [number, number][] = [];
 POINTS.forEach((p, i) => {
   POINTS.map((q, j) => ({ j, d: (p.x - q.x) ** 2 + (p.y - q.y) ** 2 }))
     .filter((o) => o.j !== i)

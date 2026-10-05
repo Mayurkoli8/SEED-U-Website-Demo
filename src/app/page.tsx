@@ -11,6 +11,7 @@ import { PartnersSection } from "@/components/home/PartnersSection";
 import { VisionSection } from "@/components/home/VisionSection";
 import { CtaSection } from "@/components/home/CtaSection";
 import { GrowthRail } from "@/components/home/GrowthRail";
+import { MobileHome } from "@/components/mobile/MobileHome";
 
 export const metadata = {
   ...pageMetadata({
@@ -25,18 +26,24 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <GrowthRail />
-      <Hero />
-      <ProblemSection />
-      <LanguageSection />
-      <IntelligenceSection />
-      <FarmSection />
-      <AskSection />
-      <ActionSection />
-      <BuiltSection />
-      <PartnersSection />
-      <VisionSection />
-      <CtaSection />
+      {/* Desktop and phones tell the story differently; CSS picks one, so there is no layout flash. */}
+      <div className="max-lg:hidden">
+        <GrowthRail />
+        <Hero />
+        <ProblemSection />
+        <LanguageSection />
+        <IntelligenceSection />
+        <FarmSection />
+        <AskSection />
+        <ActionSection />
+        <BuiltSection />
+        <PartnersSection />
+        <VisionSection />
+        <CtaSection />
+      </div>
+      <div className="lg:hidden">
+        <MobileHome />
+      </div>
     </>
   );
 }

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Container, SectionIntro, cx } from "@/components/ui/primitives";
 import { Lottie } from "@/components/ui/Lottie";
 
-const STEPS = [
+export const STEPS = [
   {
     title: "Check the crop",
     body: "Look closely. Which leaves changed first? Are there spots or insects? Careful observation is the start of every good decision.",
@@ -24,9 +24,9 @@ const STEPS = [
 ];
 
 // Frames in public/lottie/corn-growing.json (see scripts/build-lottie.mjs).
-const STAGE_FRAMES = [16, 29, 42, 68];
-const STAGE_LABELS = ["Uncertainty", "Knowledge", "Action", "Growth"];
-const FIELD = ["#ddd2a6", "#cfd3a0", "#bcd197", "#a6c98b"];
+export const STAGE_FRAMES = [16, 29, 42, 68];
+export const STAGE_LABELS = ["Uncertainty", "Knowledge", "Action", "Growth"];
+export const FIELD = ["#ddd2a6", "#cfd3a0", "#bcd197", "#a6c98b"];
 
 /** Uncertainty → knowledge → action → growth. The corn grows one stage per step. */
 function GrowingPlant({ stage, autoplay = false }: { stage: number; autoplay?: boolean }) {
